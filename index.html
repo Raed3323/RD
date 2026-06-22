@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أكاديمية الكيمياء التفاعلية النيونية | V3.0 البروفيسور الذكي</title>
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --panel-bg: rgba(17, 24, 39, 0.75);
+            --primary-glow: #38bdf8;
+            --secondary-glow: #2dd4bf;
+            --accent-purple: #a855f7;
+            --accent-pink: #f43f5e;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --success-color: #34d399;
+            --warning-color: #fb923c;
+            --border-neon: rgba(56, 189, 248, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, var(--bg-dark) 70%);
+            color: var(--text-main);
+            line-height: 1.75;
+            padding: 40px 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* تأثيرات جزيئات الخلفية الكيميائية */
+        .bg-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.03;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M40 0l40 40-40 40L0 40z' fill='%23fff' fill-opacity='.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        header {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.4) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-neon);
+            padding: 50px 30px;
+            border-radius: 32px;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+            margin-bottom: 45px;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 3.2rem;
+            background: linear-gradient(to left, var(--primary-glow), var(--secondary-glow), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 2px 10px rgba(56, 189, 248, 0.3));
+        }
+
+        header p {
+            font-size: 1.3rem;
+            color: var(--text-sub);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* شريط التنقل والتبويبات الفخم */
+        .tabs {
+            display: flex;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 8px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            gap: 10px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            text-align: center;
+            padding: 18px 25px;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text-sub);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 14px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(45, 212, 191, 0.15) 100%);
+            color: var(--primary-glow);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 0 12px rgba(56, 189, 248, 0.2);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .content-section {
+            display: none;
+            animation: stageEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes stageEnter {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); filter: blur(4px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+
+        /* لوحات المحتوى الفائقة */
+        .section-title {
+            color: var(--secondary-glow);
+            font-size: 2rem;
+            margin: 45px 0 25px 0;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-shadow: 0 0 20px rgba(45, 212, 191, 0.2);
+        }
+
+        .card {
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 28px;
+            padding: 40px;
+            margin-bottom: 35px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--primary-glow), transparent);
+            opacity: 0.5;
+        }
+
+        /* التصميم الشبكي المتطور للأعمدة */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 25px 0;
+        }
+
+        .sub-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .sub-card:hover {
+            border-color: rgba(255, 255, 255, 0.08);
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        /* صناديق المعادلات والمخططات الممتعة */
+        .formula-box {
+            background: #040711;
+            border-right: 4px solid var(--primary-glow);
+            padding: 18px 25px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            direction: ltr;
+            display: block;
+            margin: 20px 0;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.15rem;
+            color: var(--secondary-glow);
+            box-shadow: inset 0 4px 12px rgba(0,0,0,0.6);
+            letter-spacing: 1px;
+            overflow-x: auto;
+        }
+
+        .example-box {
+            background: linear-gradient(90deg, rgba(45, 212, 191, 0.06) 0%, transparent 100%);
+            border-right: 4px solid var(--secondary-glow);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .example-box strong {
+            color: var(--secondary-glow);
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .alert-box {
+            background: linear-gradient(90deg, rgba(244, 63, 94, 0.08) 0%, transparent 100%);
+            border: 1px dashed var(--accent-pink);
+            padding: 20px;
+            border-radius: 16px;
+            margin: 25px 0;
+            color: #fecdd3;
+        }
+
+        .alert-box strong {
+            color: var(--accent-pink);
+        }
+
+        /* الأوسمة والشارات النيونية */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 16px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 30px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .badge-blue { background: rgba(56, 189, 248, 0.15); color: var(--primary-glow); border: 1px solid var(--primary-glow); }
+        .badge-green { background: rgba(52, 211, 153, 0.15); color: var(--success-color); border: 1px solid var(--success-color); }
+        .badge-orange { background: rgba(251, 146, 60, 0.15); color: var(--warning-color); border: 1px solid var(--warning-color); }
+        .badge-purple { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); border: 1px solid var(--accent-purple); }
+
+        ul, ol {
+            margin-right: 30px;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        li strong {
+            color: var(--primary-glow);
+        }
+
+        /* نظام الاختبار والأسئلة الحصري */
+        .quiz-header {
+            font-size: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .question-card {
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            margin-bottom: 30px;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: var(--text-main);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            background: rgba(30, 41, 59, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.04);
+            padding: 20px 25px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1.15rem;
+            position: relative;
+        }
+
+        .option-label:hover {
+            background: rgba(56, 189, 248, 0.05);
+            border-color: rgba(56, 189, 248, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .option-container input[type="radio"] {
+            display: none;
+        }
+
+        .option-container input[type="radio"]:checked + .option-label {
+            border-color: var(--secondary-glow);
+            background: linear-gradient(90deg, rgba(45, 212, 191, 0.15) 0%, transparent 100%);
+            font-weight: bold;
+            box-shadow: 0 0 25px rgba(45, 212, 191, 0.15);
+        }
+
+        .option-container input[type="radio"]:checked + .option-label::before {
+            content: '✦';
+            margin-left: 10px;
+            color: var(--secondary-glow);
+            font-size: 1.3rem;
+        }
+
+        /* الأزرار العملاقة */
+        .btn {
+            background: linear-gradient(135deg, var(--primary-glow) 0%, var(--secondary-glow) 100%);
+            color: #040711;
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.2rem;
+            border-radius: 18px;
+            cursor: pointer;
+            font-weight: 800;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 8px 30px rgba(45, 212, 191, 0.3);
+            margin-top: 25px;
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(45, 212, 191, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* واجهة التقارير المتقدمة */
+        .result-metric {
+            font-size: 5rem;
+            background: linear-gradient(to bottom, #ffffff, var(--secondary-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            margin: 20px 0;
+            text-align: center;
+            filter: drop-shadow(0 0 30px rgba(45, 212, 191, 0.4));
+        }
+
+        .analysis-box {
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+            border: 1px solid rgba(251, 146, 60, 0.2);
+            border-right: 6px solid var(--warning-color);
+            padding: 35px;
+            border-radius: 24px;
+            margin-top: 40px;
+        }
+
+        .analysis-box h4 {
+            color: var(--warning-color);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .weakness-item {
+            background: rgba(9, 13, 22, 0.6);
+            padding: 20px;
+            border-radius: 16px;
+            margin-top: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            color: #fed7aa;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .weakness-item span {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+        }
+
+        /* متوافق مع كافة الشاشات */
+        @media (max-width: 968px) {
+            .grid-2 { grid-template-columns: 1fr; gap: 20px; }
+            body { padding: 15px; }
+            header { padding: 35px 20px; }
+            header h1 { font-size: 2.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-elements"></div>
+
+<div class="container">
+    <header>
+        <h1>أكاديمية الكيمياء التفاعلية النيونية</h1>
+        <p>المرجع التفاعلي الشامل والأكثر عمقاً للتحضير المتكامل للثاني ثانوي (نهائي + تحصيلي)</p>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" id="tab1" onclick="switchTab('study')">🔮 مخبر المعرفة والمحاكاة الذكية</button>
+        <button class="tab-btn" id="tab2" onclick="switchTab('quiz')">⚔️ حلبة التحدي والتشخيص المعرفي</button>
+    </div>
+
+    <div id="study-section" class="content-section active">
+        
+        <h2 class="section-title">🪐 1. كيمياء الحرارة والديناميكا الحرارية العميقة</h2>
+        <div class="card">
+            <p>تهتم الكيمياء الحرارية بدراسة تغيرات الحرارة التي ترافق التفاعلات الكيميائية وتغيرات الحالة الفيزيائية. الكون في هذا العلم ينقسم بدقة إلى:</p>
+            
+            <div class="grid-2">
+                <div class="sub-card">
+                    <span class="badge badge-orange">🔥 الأنظمة الطاردة للحرارة (Exothermic)</span>
+                    <p>يتدفق فيها المحتوى الحراري من النظام إلى الوسط المحيط. الطاقة تعتبر ناتجاً أساسياً، وتكون المحصلة النهائية للمحتوى الحراري <strong>سالبة (ΔH &lt; 0)</strong> لأن حرارة النواتج أقل من حرارة المتفاعلات.</p>
+                    <div class="formula-box">Reactants &rarr; Products + ΔH (Negative)</div>
+                    <div class="example-box">
+                        <strong>💡 أمثلة حية من عمق الواقع:</strong>
+                        • احتراق وقود الطائرات والسيارات (الجازولين) لإنتاج طاقة حركية.<br>
+                        • تفاعل هيدروكسيد الصوديوم مع الماء في مسلكات البالوعات التجارية.<br>
+                        • الكمادات الساخنة الجاهزة للاستخدام الفوري لعلاج آلام المفاصل.
+                    </div>
+                </div>
+                <div class="sub-card">
+                    <span class="badge badge-blue">❄️ الأنظمة الماصة للحرارة (Endothermic)</span>
+                    <p>يمتص النظام الطاقة بشكل نشط من الوسط المحيط به لتكسير الروابط القديمة. الطاقة تكتب في شق المتفاعلات، وتكون المحصلة النهائية للمحتوى الحراري <strong>موجبة (ΔH &gt; 0)</strong>.</p>
+                    <div class="formula-box">Reactants + ΔH (Positive) &rarr; Products</div>
+                    <div class="example-box">
+                        <strong>💡 أمثلة حية من عمق الواقع:</strong>
+                        • عملية البناء الضوئي في النبات (امتصاص الطاقة الضوئية).<br>
+                        • الكمادات الباردة الفورية للإصابات الرياضية (تعتمد على نترات الأمونيوم والماء لامتصاص الحرارة وخفض التورم).<br>
+                        • تفكك كربونات الكالسيوم بالحرارة العالية.
+                    </div>
+                </div>
+            </div>
+
+            <p style="margin-top: 15px;"><strong>الحسابات الجوهرية (المعادلة الكبرى في الاختبار):</strong> لحساب كمية الحرارة الممتصة أو المنطلقة عند تغير درجة الحرارة:</p>
+            <div class="formula-box">q = m &bull; c &bull; &Delta;T</div>
+            <p style="color: var(--text-sub); font-size: 0.95rem; margin-right: 15px;">حيث q تعني كمية الطاقة بالجول (J)، و m هي الكتلة بالجرام، و c هي الحرارة النوعية، و ΔT هي التغير في الحرارة (النهائية - الابتدائية).</p>
+            
+            <div class="alert-box">
+                <strong>⚠️ ثغرة اختبار هامة جداً:</strong> <u>الحرارة النوعية (c)</u> صفة مركزية مميزة ومكثفة للمادة، أي أنها <strong>لا تتغير إطلاقاً</strong> بتغير كمية المادة أو كتلتها (الحرارة النوعية لقطرة ماء تساوي تماماً الحرارة النوعية للمحيط الأطلسي بأكمله).
+            </div>
+        </div>
+
+        <h2 class="section-title">⚡ 2. آليات سرعة التفاعل ونظرية التصادم الفعال</h2>
+        <div class="card">
+            <p>لكي يحدث أي تفاعل كيميائي، لا بد للجسيمات المتفاعلة أن تتصادم. ولكن، ليست كل التصادمات منتجة؛ بل يجب أن يتحقق **التصادم الفعال (المثمر)** بشروطه الصارمة:</p>
+            <ol>
+                <li><strong>الاتجاه الصحيح والمناسب:</strong> تموضع الجسيمات بجهوزية هندسية تسمح بإعادة ترتيب الذرات.</li>
+                <li><strong>طاقة كافية:</strong> امتلاك الجسيمات للحد الأدنى من الطاقة الكافية لكسر الروابط القديمة وتشكيل <u>المعقد المنشط</u> (وهي طاقة التنشيط Ea).</li>
+            </ol>
+
+            <p style="margin-top: 25px; color: var(--secondary-glow); font-weight: bold;">العوامل الستة المتحكمة في سرعة التفاعلات كيميائياً وصناعياً:</p>
+            <ul>
+                <li><strong>طبيعة المواد المتفاعلة:</strong> التكوين الذري الداخلي الفطري (مثال: الخارصين والحديد يتفاعلان مع الأحماض بسرعة فائقة جداً مقارنة بالنحاس الذي يقاوم التفاعل نتيجة تكوينه الإلكتروني).</li>
+                <li><strong>التركيز:</strong> زيادة عدد الجسيمات في وحدة الحجم ترفع معدل فرص التصادمات المتوقعة.</li>
+                <li><strong>مساحة السطح:</strong> تفتيت وتجزئة المواد الصلبة يعرض عدداً هائلاً من الجسيمات للتفاعل اللحظي.
+                    <div class="example-box"><strong>💡 معيار المقارنة الكلاسيكي بالاختبار:</strong> احتراق نشارة الخشب يكون سريعا وعنيفا جداً مقارنة بقطعة خشبية سميكة صلبة ومصمتة لها نفس الوزن والكتلة بالضبط.</div>
+                </li>
+                <li><strong>درجة الحرارة:</strong> تمد الجسيمات بطاقة حركية جبارة تزيد من سرعة تحركها وعنف تصادماتها الفعالة.</li>
+                <li><strong>المحفزات (Catalysts):</strong> مواد تضاف لتسريع التفاعل بطريقة عبقرية؛ فهي تقوم بـ <strong>خفض طاقة التنشيط (Ea)</strong> مما يسمح بعبور الجسيمات نحو النواتج بسرعة هائلة، دون أن تستهلك المادة المحفزة أو تتغير في نهاية التفاعل.</li>
+                <li><strong>المثبطات (Inhibitors):</strong> مواد تبطئ التفاعل أو تمنعه بالكامل (مثل المواد الحافظة بالأطعمة المعلبة لمنع الأكسدة والتلف).</li>
+            </ul>
+        </div>
+
+        <h2 class="section-title">🔄 3. ديناميكية الاتزان الكيميائي وأنظمة لوشاتيليه</h2>
+        <div class="card">
+            <p>يصل التفاعل إلى حالة <strong>الاتزان الديناميكي</strong> عندما تتساوى سرعة التفاعل الأمامي مع سرعة التفاعل العكسي تماماً، وهنا تثبت تراكيز المواد المتفاعلة والناتجة، وتظل حركة الجزيئات نشطة ومستمرة في الاتجاهين دون توقف.</p>
+            
+            <p><strong>قانون مبدأ لوشاتيليه الشهير:</strong> إذا بذل جهد أو مؤثر خارجي (مثل تغير التركيز، الضغط، الحجم، الحرارة) على نظام في حالة اتزان، فإن النظام يزيح نفسه في الاتجاه الذي يقلل أو يلغي فيه أثر هذا الجهد المستجد.</p>
+            
+            <div class="formula-box">N2(g) + 3H2(g) &rightleftharpoons; 2NH3(g) + Heat &emsp; [تفاعل هابر لصناعة الأمونيا]</div>
+            
+            <div class="example-box">
+                <strong>📝 محاكاة لوشاتيليه لحالات الضغط والحجم:</strong><br>
+                في المعادلة أعلاه، احسب عدد المولات الغازية في الطرفين:<br>
+                • المتفاعلات: 1 مول نيتروجين + 3 مول هيدروجين = <strong>4 مولات</strong>.<br>
+                • النواتج: <strong>2 مول</strong> أمونيا.<br>
+                <strong>عند زيادة الضغط الخارجي (تقليص سعة حجم الوعاء):</strong> يشعر التفاعل بالاختناق والازدحام، فيقوم تلقائياً بالانزياح نحو الطرف الذي يحتوي على <u>عدد مولات أقل</u> ليتخلص من الضغط، أي ينزاح نحو <strong>اليمين (النواتج)</strong> وتزداد كمية الأمونيا.
+            </div>
+
+            <div class="alert-box">
+                <strong>⚠️ الفخ الأعظم في التحصيلي والنهائي:</strong> إضافة مادة محفزة لنظام متزن <strong>لا تغير موضع الاتزان ولا تؤثر على كمية ونسب النواتج إطلاقاً!</strong> دورها الوحيد هو تسريع الوصول لحالة الاتزان في زمن قياسي.
+            </div>
+
+            <p style="margin-top: 20px;"><strong>ثابت حاصل الذائبية (Ksp):</strong> للمركبات شحيحة الذوبان في الماء. عند مقارنة الحاصل الأيوني (Q) بثابت الذائبية (Ksp) يظهر لدينا التنبؤ التالي:</p>
+            <ul>
+                <li><strong>Q &gt; Ksp :</strong> المحلول فوق مشبع، و<strong>يتكون راسب</strong> فوراً.</li>
+                <li><strong>Q = Ksp :</strong> المحلول مشبع متزن، لا يتغير.</li>
+                <li><strong>Q &lt; Ksp :</strong> المحلول غير مشبع، لا يتكون راسب ويمكن إذابة المزيد.</li>
+            </ul>
+        </div>
+
+        <h2 class="section-title">🧪 4. عالم الهيدروكربونات وتصنيف الروابط والتسمية</h2>
+        <div class="card">
+            <p>الهيدروكربونات هي عصب الكيمياء العضوية، وتحتوي فقط على الكاربون والهيدروجين. تُقسم إلى ثلاث عائلات مفتوحة أساسية حسب طبيعة روابط الكاربون الفولاذية:</p>
+            
+            <div class="grid-2">
+                <div class="sub-card">
+                    <span class="badge badge-green">الألكانات (Alkanes)</span>
+                    <p>صيغتها العامة: <strong>$C_n H_{2n+2}$</strong></p>
+                    <p>روابطها <u>أحادية مشبعة</u> بالكامل من نوع سيجما ($\sigma$) القوي جداً صعب الكسر. ميثان، إيثان، بروبان. تمتاز بخمولها الكيميائي النسبي مقارنة بباقي العائلات.</p>
+                </div>
+                <div class="sub-card">
+                    <span class="badge badge-purple">الألكينات (Alkenes)</span>
+                    <p>صيغتها العامة: <strong>$C_n H_{2n}$</strong></p>
+                    <p>هيدروكربونات <u>غير مشبعة</u> تحتوي على رابطة تساهمية <u>ثنائية واحدة على الأقل</u> (واحدة سيجما والأخرى باي $\pi$ الضعيفة السهلة الكسر والنشطة).</p>
+                    <div class="example-box"><strong>💡 الإيثين (الإيثيلين):</strong> الغاز العضوي الأشهر والمسؤول تجارياً عن إنضاج الفواكه والموز بسرعة فائقة في المستودعات.</div>
+                </div>
+            </div>
+
+            <p style="margin-top: 15px;"><strong>الألكاينات (Alkyne):</strong> صيغتها العامة <strong>$C_n H_{2n-2}$</strong> وتضم روابط <u>ثلاثية غير مشبعة</u> شديدة النشاط (واحدة سيجما واثنتان باي)، ومثالها الصارخ هو غاز الإيثاين (الأسيتيلين) المستخدم في مشاعل قاطعات ولحام المعادن نظراً للحرارة الرهيبة التي يطلقها عند الاحتراق.</p>
+            
+            <p style="margin-top: 20px;"><strong>الهيدروكربونات الأروماتية (العطرية):</strong> مركبات حلقية ذات استقرار فائق وهائل نتيجة ظاهرة الرنين (تبادل الروابط المستمر)، والنواة الأم لها هي <strong>حلقة البنزين العطري الشهيرة ($C_6H_6$)</strong>.</p>
+        </div>
+
+        <h2 class="section-title">🧱 5. كيمياء المجموعات الوظيفية والبوليمرات المستهدفة</h2>
+        <div class="card">
+            <p>دخول ذرة غريبة على الهيدروكربون يمنحه هوية وخواص كيميائية وفيزيائية فريدة وجديدة تماماً. نلخص التفاعلات المصيرية المتكررة بالاختبارات هنا:</p>
+            
+            <p><strong>أنماط التفاعلات العضوية الأساسية:</strong></p>
+            <ul>
+                <li><strong>تفاعلات الاستبدال (الهلجنة):</strong> حلول ذرة هالوجين (مثل الكلور أو الفلور) مكان ذرة هيدروجين في الألكان المشبع الخامل لإنتاج هاليد الألكيل.</li>
+                <li><strong>تفاعلات الحذف (Elimination):</strong> انتزاع ذرات من مركب مشبع (مثل حذف جزيء ماء $H_2O$ من الكحول) لتحويله إلى مركب غير مشبع يحتوي على رابطة ثنائية (ألكين).</li>
+                <li><strong>تفاعلات الأكسدة المتدرجة (مهم جداً):</strong>
+                    <br>• أكسدة كحول أولي ينتج عنها <strong>ألدهيد</strong>، واستمرار أكسدته ينتج <strong>حمضاً كربوكسيلياً</strong>.
+                    <br>• أكسدة كحول ثانوي ينتج عنها <strong>كيتون</strong> بشكل مباشر وثابت (مثل الأسيتون الشهير كمذيب عضوي ومزيل لطلاء الأظافر).
+                </li>
+            </ul>
+
+            <p style="margin-top: 25px;"><strong>عالم البوليمرات العملاقة (Polymers):</strong> جزيئات ضخمة تتكون من ارتباط آلاف الوحدات البنائية الصغيرة المتكررة التي تسمى <strong>المونومرات</strong>.</p>
+            <div class="example-box">
+                <strong>💡 البولي إيثيلين (Polyethylene - P.E.):</strong> الملك المتوج لصناعة البلاستيك اللين، العبوات، والرقائق.<br>
+                <u>أبرز الخصائص الفيزيائية والكيميائية المطلوبة بدقة علمية:</u><br>
+                1. ملمس شمعي مرن وناعم.<br>
+                2. خامل كيميائياً بشكل كامل (لا يتفاعل مع الأحماض أو المواد الغذائية المحفوظة داخله، مما يجعله آمناً).<br>
+                3. عازل كهربائي وحراري ممتاز جداً ويدوم طويلاً.<br>
+                4. لا يذوب في الماء إطلاقاً لعدم قدرته على تكوين روابط هيدروجينية.
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-section" class="content-section">
+        <div class="card" id="quiz-wrapper">
+            <div id="quiz-interface">
+                <div class="quiz-header">
+                    <span id="question-number" style="color: var(--primary-glow); font-weight: 800;">السؤال 1 من 12</span> 
+                    <span id="topic-badge" class="badge badge-purple">جاري التحميل...</span>
+                </div>
+                <div class="question-card">
+                    <div class="question-text" id="q-text">جاري إشعال وحدات التشخيص النيونية الكيميائية...</div>
+                </div>
+                <div class="options-grid" id="options-wrapper"></div>
+                <button class="btn" onclick="submitAnswer()">تأكيد الخيار والانتقال عبر البوابة الكيميائية &larr;</button>
+            </div>
+
+            <div id="results-interface" style="display:none;">
+                <h2 style="text-align: center; color: var(--secondary-glow); font-size: 2.2rem; font-weight: 900;">🏆 مصفوفة التقييم والتشخيص الذكي للبروفيسور</h2>
+                <div class="result-metric" id="final-score">0 / 0</div>
+                <p id="feedback-text" style="text-align: center; font-size: 1.3rem; margin-bottom: 25px; padding: 0 20px;"></p>
+                
+                <div class="analysis-box" id="analysis-wrapper" style="display:none;">
+                    <h4>🔍 الفحص المجهري لثغراتك وتحليل مسارك الأكاديمي الموصى به:</h4>
+                    <p style="color: var(--text-sub); margin-bottom: 15px;">الذكاء الاصطناعي للمنصة رصد بعض عدم الاستقرار في فهمك للدروس التالية. نقترح التوجه لقسم "مخبر المعرفة" لمراجعتها فوراً:</p>
+                    <div id="weakness-list"></div>
+                </div>
+
+                <button class="btn" onclick="resetQuiz()" style="background: linear-gradient(135deg, var(--accent-pink) 0%, #e11d48 100%); color: white; margin-top: 35px;">إعادة تشغيل المحاكاة لتصفير الثغرات</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            text: "أي من الخواص الكيميائية أو الفيزيائية التالية تعتبر صفة مكثفة مميزة للمادة، والتي لا تتأثر مطلقاً بتغير كتلة المادة أو حجم وعائها في الحسابات الحرارية؟",
+            options: ["كمية المحتوى الحراري المنطلق H", "الحرارة النوعية للمادة c", "كمية الطاقة المتبادلة q", "الكتلة الجرامية الكلية m"],
+            correct: 1,
+            topic: "كيمياء الحرارة والديناميكا الحرارية العميقة"
+        },
+        {
+            text: "في مصانع التغذية والمختبرات المتقدمة، ما هو الجهاز المعزول بدقة تامة والذي يستخدم بشكل خاص لتعيين قياس كمية الطاقة والسعرات المخزونة في عينات الأطعمة عبر حرقها كلياً؟",
+            options: ["المسعر القنبلي ( التفجيري )", "الباروميتر الزئبقي", "مقياس جول الكهرومغناطيسي", "الهيدروميتر النوعي"],
+            correct: 0,
+            topic: "كيمياء الحرارة والديناميكا الحرارية العميقة"
+        },
+        {
+            text: "عند حرق عينتين لهما نفس الكتلة تماماً ومن نفس المصدر، وُجد أن نشارة الخشب تحترق بشكل أسرع وعنيف جداً مقارنة بكتلة خشبية صلبة ومصمتة. يعود هذا التسارع الفائق إلى عامل:",
+            options: ["طبيعة المادة الفطرية المتفاعلة", "زيادة مساحة السطح الفعالة المعرضة للتفاعل للتصادم الكلي", "انخفاض طاقة التنشيط الافتراضية للنشارة", "عمل نشارة الخشب كمادة محفزة ذاتية"],
+            correct: 1,
+            topic: "آليات سرعة التفاعل ونظرية التصادم الفعال"
+        },
+        {
+            text: "ما هو الأثر الحقيقي المباشر لإضافة مادة محفزة (Catalyst) رائدة على موضع توازن كيميائي ديناميكي مستقر وعلى كمية ونسب النواتج النهائية؟",
+            options: ["تزيح موضع الاتزان جهة النواتج فترتفع كميتها وتتضاعف", "تزيح موضع الاتزان جهة اليسار فتقل المتفاعلات"، "لا تؤثر أبداً على موضع الاتزان ولا تغير من نسب وكمية النواتج إطلاقاً", "تستهلك لمنع حدوث وتنشيط التفاعل العكسي"],
+            correct: 2,
+            topic: "ديناميكية الاتزان الكيميائي وأنظمة لوشاتيليه"
+        },
+        {
+            text: "في التفاعل الغازي المتزن لإنتاج الأمونيا (N2 + 3H2 <=> 2NH3 + Heat)، ماذا يحدث لموضع الاتزان بدقة عند زيادة الضغط الكلي عبر تقليص حجم الوعاء؟",
+            options: ["ينزاح الاتزان إلى اليسار (المتفاعلات) نحو عدد المولات الأكثر ليعوض الحجم", "ينزاح الاتزان إلى اليمين (النواتج) نحو الطرف ذي عدد المولات الأقل تخفيفاً للضغط الخارجي", "يتوقف التفاعل الأمامي والعكسي تماماً نتيجة الضغط", "لا يتأثر لأن الغازات خاملة"],
+            correct: 1,
+            topic: "ديناميكية الاتزان الكيميائي وأنظمة لوشاتيليه"
+        },
+        {
+            text: "عند قياس الحاصل الأيوني لمحلول مركب أيوني شحيح الذوبان في المختبر، ووجد أن القيمة الرقمية للحاصل الأيوني (Q > Ksp)، فما هو التنبؤ العلمي الدقيق لحالة هذا المحلول؟",
+            options: ["المحلول غير مشبع كلياً ولن يتشكل أي راسب", "المحلول فوق مشبع ويترسب الفائض فوراً على شكل مادة صلبة", "المحلول في حالة اتزان مثالي مشبع خالي من الترسيب", "تتكسر روابط المركب الأيونية وتتحول لروابط أروماتية حلقية"],
+            correct: 1,
+            topic: "ديناميكية الاتزان الكيميائي وأنظمة لوشاتيليه وثابت الذائبية Ksp"
+        },
+        {
+            text: "الهيدروكربون الغازي غير المشبع الذي تعتمد عليه المستودعات التجارية والصناعية الكبرى لتسريع نضوج محاصيل الفواكه والموز بفعالية يحمل صيغة جزيئية تنتمي لعائلة:",
+            options: ["الألكانات المشبعة (غاز الإيثان)", "الألكينات غير المشبعة برابطة ثنائية (الإيثين / الإيثيلين)", "الألكاينات ذات الروابط الثلاثية (الأسيتيلين)", "المركبات الأروماتية الحلقية المستقرة"],
+            correct: 1,
+            topic: "عالم الهيدروكربونات وتصنيف الروابط والتسمية"
+        },
+        {
+            text: "أي من المركبات العضوية التالية يمثل النواة الأساسية للهيدروكربونات الأروماتية (العطرية)، ويمتاز باستقرار بنيوي فائق وجبار نتيجة ظاهرة الرنين الإلكتروني وصيغته C6H6؟",
+            options: ["الهكسان الحلقي المشبع", "البنزين العطري", "التولوين الميثيلي المتفرع", "البروبان الحلقي النشط"],
+            correct: 1,
+            topic: "عالم الهيدروكربونات وتصنيف الروابط والتسمية"
+        },
+        {
+            text: "عند تعريض كحول ثانوي (Secondary Alcohol) مثل مركب (2-بروبانول) لعملية أكسدة تامة ومباشرة في المختبر، فإن المركب العضوي المستقر الناتج يكون:",
+            options: ["ألدهيد نشط", "حمض كربوكسيلي قوي", "كيتون مستقر (مثل مركب الأسيتون)", "ألكان مشبع خامل"],
+            correct: 2,
+            topic: "كيمياء المجموعات الوظيفية والبوليمرات المستهدفة"
+        },
+        {
+            text: "تفاعلات تحويل المركبات العضوية المشبعة ذات الروابط الأحادية إلى مركبات غير مشبعة تحتوي روابط ثنائية عبر نزع جزيء ماء أو هيدروجين تُعرف علمياً بتفاعلات:",
+            options: ["الإضافة العضوية", "الاستبدال الحلقي", "الحذف العضوي", "الهلجنة الضوئية المستمرة"],
+            correct: 2,
+            topic: "كيمياء المجموعات الوظيفية والبوليمرات المستهدفة"
+        },
+        {
+            text: "يمتاز بوليمر البولي إيثيلين (P.E.) ذو الاستخدام الواسع في الصناعات البلاستيكية والعبوات المحكمة بجميع الخصائص التالية، ما عدا خاصية واحدة خاطئة علمياً وهي:",
+            options: ["ملمسه شمعي وخموله الكيميائي التام تجاه الأحماض والأطعمة", "رديء التوصيل للكهرباء والحرارة مما يجعله عازلاً ممتازاً", "ذوبانه السريع والسهل جداً في الماء والمحاليل المائية القطبية", "بنيته تتكون من آلاف المونومرات المتكررة بروابط تساهمية متينة"],
+            correct: 2,
+            topic: "كيمياء المجموعات الوظيفية والبوليمرات المستهدفة"
+        },
+        {
+            text: "يتفاعل غاز الميثان أو الألكانات بصفة عامة مع الهالوجينات مثل الكلور تحت تأثير الأشعة فوق البنفسجية (UV) لإنتاج هاليدات الألكيل عبر تفاعل نوعه:",
+            options: ["حذف وإزالة هيدروجين", "إضافة وكسر روابط باي", "استبدال وهلجنة مباشرة", "أكسدة واختزال عنيفة"],
+            correct: 2,
+            topic: "كيمياء المجموعات الوظيفية والبوليمرات المستهدفة"
+        }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+    let wrongTopics = {};
+
+    function switchTab(tabName) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+        
+        if(tabName === 'study') {
+            document.getElementById('tab1').classList.add('active');
+            document.getElementById('study-section').classList.add('active');
+        } else {
+            document.getElementById('tab2').classList.add('active');
+            document.getElementById('quiz-section').classList.add('active');
+            loadQuestion();
+        }
+    }
+
+    function loadQuestion() {
+        if (currentQ < questions.length) {
+            const q = questions[currentQ];
+            document.getElementById("question-number").innerText = `السؤال ${currentQ + 1} من ${questions.length}`;
+            document.getElementById("topic-badge").innerText = q.topic;
+            document.getElementById("q-text").innerText = q.text;
+
+            const optionsWrapper = document.getElementById("options-wrapper");
+            optionsWrapper.innerHTML = "";
+
+            q.options.forEach((opt, idx) => {
+                const div = document.createElement("div");
+                div.className = "option-container";
+                div.innerHTML = `
+                    <input type="radio" name="quiz-opt" id="opt-${idx}" value="${idx}">
+                    <label for="opt-${idx}" class="option-label">${opt}</label>
+                `;
+                optionsWrapper.appendChild(div);
+            });
+        } else {
+            showResults();
+        }
+    }
+
+    function submitAnswer() {
+        const selected = document.querySelector('input[name="quiz-opt"]:checked');
+        if (!selected) {
+            alert("يا بطل الكيمياء، يرجى تحديد أحد الخيارات لتفعيل المحاكاة والانتقال للسؤال التالي!");
+            return;
+        }
+
+        const answerIdx = parseInt(selected.value);
+        const q = questions[currentQ];
+
+        if (answerIdx === q.correct) {
+            score++;
+        } else {
+            wrongTopics[q.topic] = true;
+        }
+
+        currentQ++;
+        loadQuestion();
+    }
+
+    function showResults() {
+        document.getElementById("quiz-interface").style.display = "none";
+        document.getElementById("results-interface").style.display = "block";
+        
+        const scoreElement = document.getElementById("final-score");
+        scoreElement.innerText = `${score} / ${questions.length}`;
+
+        const feedback = document.getElementById("feedback-text");
+        if(score === questions.length) {
+            feedback.innerHTML = "🎯 <strong>مرتبة الشرف والعبقرية الكاملة!</strong> لقد حققت العلامة الكاملة بجداره واستحقاق، أنت جاهز لانتزاع الـ 100% في الاختبار النهائي والتحصيلي بكل ثقة وسهولة.";
+        } else if (score >= questions.length * 0.75) {
+            feedback.innerHTML = "⚡ <strong>مستوى استثنائي رائع ومبهر جداً!</strong> معلوماتك متينة وفهمك عميق للغاية، بعض اللمسات المراجِعة البسيطة تفصلك عن الدرجة الكاملة والكمال.";
+        } else {
+            feedback.innerHTML = "📚 <strong>بداية التمكين الحقيقي!</strong> هذا الاختبار التشخيصي حدد بدقة الثغرات المعرفية التي كانت ستفاجئك بالاختبار الحقيقي. راجع الدروس المحددة بالأسفل لتضمن التميز الكلي.";
+        }
+
+        const topicsArray = Object.keys(wrongTopics);
+        if (topicsArray.length > 0) {
+            document.getElementById("analysis-wrapper").style.display = "block";
+            const listWrapper = document.getElementById("weakness-list");
+            listWrapper.innerHTML = "";
+            topicsArray.forEach(topic => {
+                const div = document.createElement("div");
+                div.className = "weakness-item";
+                div.innerHTML = `⚠️ <strong>يتطلب مراجعة فورية لدرس: ${topic}</strong><span>توصية البروفيسور: عد لعلامة تبويب 'مخبر المعرفة' وتأمل المخططات والأمثلة المكتوبة داخل هذا القسم لتثبيتها نهائياً.</span>`;
+                listWrapper.appendChild(div);
+            });
+        } else {
+            document.getElementById("analysis-wrapper").style.display = "none";
+        }
+    }
+
+    function resetQuiz() {
+        currentQ = 0;
+        score = 0;
+        wrongTopics = {};
+        document.getElementById("quiz-interface").style.display = "block";
+        document.getElementById("results-interface").style.display = "none";
+        loadQuestion();
+    }
+</script>
+
+</body>
+</html>
