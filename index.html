@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مراجعة كيمياء | 2-2 </title>
+    <title>أكاديمية الكيمياء التفاعلية النيونية | V3.1 الإصدار المستقر</title>
     <style>
         :root {
             --bg-dark: #090d16;
@@ -41,7 +41,6 @@
             margin: 0 auto;
         }
 
-        /* تأثيرات جزيئات الخلفية الكيميائية */
         .bg-elements {
             position: fixed;
             top: 0;
@@ -86,7 +85,6 @@
             margin: 0 auto;
         }
 
-        /* شريط التنقل والتبويبات الفخم */
         .tabs {
             display: flex;
             background: rgba(15, 23, 42, 0.6);
@@ -141,7 +139,6 @@
             to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
-        /* لوحات المحتوى الفائقة */
         .section-title {
             color: var(--secondary-glow);
             font-size: 2rem;
@@ -177,7 +174,6 @@
             opacity: 0.5;
         }
 
-        /* التصميم الشبكي المتطور للأعمدة */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -198,7 +194,6 @@
             background: rgba(15, 23, 42, 0.7);
         }
 
-        /* صناديق المعادلات والمخططات الممتعة */
         .formula-box {
             background: #040711;
             border-right: 4px solid var(--primary-glow);
@@ -246,7 +241,6 @@
             color: var(--accent-pink);
         }
 
-        /* الأوسمة والشارات النيونية */
         .badge {
             display: inline-flex;
             align-items: center;
@@ -278,7 +272,6 @@
             color: var(--primary-glow);
         }
 
-        /* نظام الاختبار والأسئلة الحصري */
         .quiz-header {
             font-size: 1.25rem;
             display: flex;
@@ -349,7 +342,6 @@
             font-size: 1.3rem;
         }
 
-        /* الأزرار العملاقة */
         .btn {
             background: linear-gradient(135deg, var(--primary-glow) 0%, var(--secondary-glow) 100%);
             color: #040711;
@@ -379,7 +371,6 @@
             transform: translateY(-1px);
         }
 
-        /* واجهة التقارير المتقدمة */
         .result-metric {
             font-size: 5rem;
             background: linear-gradient(to bottom, #ffffff, var(--secondary-glow));
@@ -424,7 +415,6 @@
             font-size: 0.95rem;
         }
 
-        /* متوافق مع كافة الشاشات */
         @media (max-width: 968px) {
             .grid-2 { grid-template-columns: 1fr; gap: 20px; }
             body { padding: 15px; }
@@ -439,7 +429,7 @@
 
 <div class="container">
     <header>
-        <h1>مراجعة كيمياء | 2-2 </h1>
+        <h1>أكاديمية الكيمياء التفاعلية النيونية</h1>
         <p>المرجع التفاعلي الشامل والأكثر عمقاً للتحضير المتكامل للثاني ثانوي (نهائي + تحصيلي)</p>
     </header>
 
@@ -448,6 +438,7 @@
         <button class="tab-btn" id="tab2" onclick="switchTab('quiz')">⚔️ حلبة التحدي والتشخيص المعرفي</button>
     </div>
 
+    <!-- قسم الشرح المعزز والعميق جداً -->
     <div id="study-section" class="content-section active">
         
         <h2 class="section-title">🪐 1. كيمياء الحرارة والديناميكا الحرارية العميقة</h2>
@@ -586,6 +577,7 @@
         </div>
     </div>
 
+    <!-- قسم نظام التحدي التفاعلي والتشخيص التلقائي للمهارات -->
     <div id="quiz-section" class="content-section">
         <div class="card" id="quiz-wrapper">
             <div id="quiz-interface">
@@ -639,7 +631,7 @@
         },
         {
             text: "ما هو الأثر الحقيقي المباشر لإضافة مادة محفزة (Catalyst) رائدة على موضع توازن كيميائي ديناميكي مستقر وعلى كمية ونسب النواتج النهائية؟",
-            options: ["تزيح موضع الاتزان جهة النواتج فترتفع كميتها وتتضاعف", "تزيح موضع الاتزان جهة اليسار فتقل المتفاعلات"، "لا تؤثر أبداً على موضع الاتزان ولا تغير من نسب وكمية النواتج إطلاقاً", "تستهلك لمنع حدوث وتنشيط التفاعل العكسي"],
+            options: ["تزيح موضع الاتزان جهة النواتج فترتفع كميتها وتتضاعف", "تزيح موضع الاتزان جهة اليسار فتقل المتفاعلات", "لا تؤثر أبداً على موضع الاتزان ولا تغير من نسب وكمية النواتج إطلاقاً", "تستهلك لمنع حدوث وتنشيط التفاعل العكسي"],
             correct: 2,
             topic: "ديناميكية الاتزان الكيميائي وأنظمة لوشاتيليه"
         },
@@ -650,7 +642,7 @@
             topic: "ديناميكية الاتزان الكيميائي وأنظمة لوشاتيليه"
         },
         {
-            text: "عند قياس الحاصل الأيوني لمحلول مركب أيوني شحيح الذوبان في المختبر، ووجد أن القيمة الرقمية للحاصل الأيوني (Q > Ksp)، فما هو التنبؤ العلمي الدقيق لحالة هذا المحلول؟",
+            text: "عند قياس الحاصل الأيوني لمحلول مركب أيوني شحيح الذوبان في المختبر، ووجد أن القيمة الرقمية للحاصل الأيوني (Q > Ksp)، فما هو التنبؤ العلمي الدقيق لحالة هذا المحلول？",
             options: ["المحلول غير مشبع كلياً ولن يتشكل أي راسب", "المحلول فوق مشبع ويترسب الفائض فوراً على شكل مادة صلبة", "المحلول في حالة اتزان مثالي مشبع خالي من الترسيب", "تتكسر روابط المركب الأيونية وتتحول لروابط أروماتية حلقية"],
             correct: 1,
             topic: "ديناميكية الاتزان الكيميائي وأنظمة لوشاتيليه وثابت الذائبية Ksp"
